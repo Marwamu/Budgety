@@ -5,8 +5,14 @@ var addBtn = document.getElementById('add__btn')
 var expensesList = document.querySelector('.expenses__list')
 var incomeList = document.querySelector('.income__list')
 var expensesTitle = document.querySelector('.expenses__title')
+var budgetValue = document.querySelector('.budget__value')
 var boolSelect = true;
 
+function clacPercentage(val) {
+    var budget = parseFloat(budgetValue.innerHTML.split(" ")[1].replace(/,/g, ''));
+    // console.log((budgetValue.value / val) * 100);
+    return ((val / budget) * 100).toFixed(2) + ' %';
+}
 selectOption.addEventListener('change', function (e) {
     if (e.target.value === 'exp') {
         selectOption.style.borderColor = '#FF5049';
@@ -46,7 +52,6 @@ selectOption.addEventListener('change', function (e) {
 
 })
 addBtn.addEventListener('click', function (e) {
-    var whichList = expensesTitle.innerHTML
     // console.log(whichList);
     let itemClearFix = document.createElement("div");
     itemClearFix.classList.add("item", 'clearfix');
@@ -62,27 +67,30 @@ addBtn.addEventListener('click', function (e) {
     itemDeleteBtn.classList.add("item__delete--btn");
     let closeOutline = document.createElement("i");
     closeOutline.classList.add("ion-ios-close-outline");
-    if (!boolSelect) {
-        expensesList.append(itemClearFix);
-        let itemPercentage = document.createElement("div");
-        itemPercentage.classList.add("item__percentage");
-        rightClearfix.append(itemPercentage)
-        console.log(itemPercentage);
-    }
-    else {
-        incomeList.append(itemClearFix);
-        console.log(incomeList);
-    }
-    // incomeList.append(itemClearFix);
+
     itemDescription.innerHTML = addDescription.value
     itemClearFix.append(itemDescription);
-    itemClearFix.append(rightClearfix)
     itemValue.innerHTML = addValue.value
     rightClearfix.append(itemValue)
-    rightClearfix.append(itemDelete)
-    itemDelete.append(itemDeleteBtn)
-    itemDeleteBtn.append(closeOutline)
+
+    if (!boolSelect) {
+
+        let itemPercentage = document.createElement("div");
+        itemPercentage.classList.add("item__percentage");
+        itemPercentage.innerHTML = clacPercentage(parseFloat(itemValue.innerHTML));
+        rightClearfix.append(itemPercentage)
+        itemDeleteBtn.append(closeOutline)
+        itemDelete.append(itemDeleteBtn)
+        rightClearfix.append(itemDelete)
+        itemClearFix.append(rightClearfix)
+        expensesList.append(itemClearFix);
+    }
+    else {
+        itemDeleteBtn.append(closeOutline)
+        itemDelete.append(itemDeleteBtn)
+        rightClearfix.append(itemDelete)
+        itemClearFix.append(rightClearfix)
+        incomeList.append(itemClearFix);
+    }
     // console.log(itemClearFix);
 })
-
-// addItem();
