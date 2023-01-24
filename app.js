@@ -6,12 +6,16 @@ var expensesList = document.querySelector('.expenses__list')
 var incomeList = document.querySelector('.income__list')
 var expensesTitle = document.querySelector('.expenses__title')
 var budgetValue = document.querySelector('.budget__value')
+var totalBudget = 0
+// var budgetValue = document.querySelector('.budget__value')
 var boolSelect = true;
-
+// function totalBudget(val) {
+//     return budgetValue.innerHTML += val.value;
+// }
 function clacPercentage(val) {
-    var budget = parseFloat(budgetValue.innerHTML.split(" ")[1].replace(/,/g, ''));
-    // console.log((budgetValue.value / val) * 100);
-    return ((val / budget) * 100).toFixed(2) + ' %';
+    var budget = parseFloat(budgetValue.innerHTML);
+    console.log(budget);
+    return ((val / budget) * 100).toFixed(1) + ' %';
 }
 selectOption.addEventListener('change', function (e) {
     if (e.target.value === 'exp') {
@@ -52,6 +56,7 @@ selectOption.addEventListener('change', function (e) {
 
 })
 addBtn.addEventListener('click', function (e) {
+
     // console.log(whichList);
     let itemClearFix = document.createElement("div");
     itemClearFix.classList.add("item", 'clearfix');
@@ -67,23 +72,28 @@ addBtn.addEventListener('click', function (e) {
     itemDeleteBtn.classList.add("item__delete--btn");
     let closeOutline = document.createElement("i");
     closeOutline.classList.add("ion-ios-close-outline");
-
     itemDescription.innerHTML = addDescription.value
     itemClearFix.append(itemDescription);
     itemValue.innerHTML = addValue.value
     rightClearfix.append(itemValue)
 
     if (!boolSelect) {
-
+        totalBudget -= parseFloat(itemValue.innerHTML);
+        console.log(totalBudget.toString());
+        budgetValue.innerHTML = totalBudget.toString();
         let itemPercentage = document.createElement("div");
         itemPercentage.classList.add("item__percentage");
-        itemPercentage.innerHTML = clacPercentage(parseFloat(itemValue.innerHTML));
+        var percantage = clacPercentage(parseFloat(itemValue.innerHTML));
+        console.log(percantage);
+        itemPercentage.innerHTML = percantage.toString();
         rightClearfix.append(itemPercentage)
         itemDeleteBtn.append(closeOutline)
         itemDelete.append(itemDeleteBtn)
         rightClearfix.append(itemDelete)
         itemClearFix.append(rightClearfix)
         expensesList.append(itemClearFix);
+
+
     }
     else {
         itemDeleteBtn.append(closeOutline)
@@ -91,6 +101,8 @@ addBtn.addEventListener('click', function (e) {
         rightClearfix.append(itemDelete)
         itemClearFix.append(rightClearfix)
         incomeList.append(itemClearFix);
+        totalBudget += parseFloat(itemValue.innerHTML);
+        budgetValue.innerHTML = totalBudget.toString();
     }
     // console.log(itemClearFix);
 })
