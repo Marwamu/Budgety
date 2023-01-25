@@ -6,16 +6,32 @@ var expensesList = document.querySelector('.expenses__list')
 var incomeList = document.querySelector('.income__list')
 var expensesTitle = document.querySelector('.expenses__title')
 var budgetValue = document.querySelector('.budget__value')
-var totalBudget = 0
+var totalBudget = 0.00
+// console.log(totalBudget);
 // var budgetValue = document.querySelector('.budget__value')
 var boolSelect = true;
 // function totalBudget(val) {
 //     return budgetValue.innerHTML += val.value;
 // }
-function clacPercentage(val) {
-    var budget = parseFloat(budgetValue.innerHTML);
-    console.log(budget);
-    return ((val / budget) * 100).toFixed(1) + ' %';
+function compareTotalBudget() {
+    if (totalBudget >= 0.00) {
+        budgetValue.innerHTML = '+' + totalBudget.toLocaleString("en-US");
+    }
+    else {
+        budgetValue.innerHTML = totalBudget.toLocaleString("en-US");
+    }
+}
+function clacPercentage(val, oldBudget) {
+    if (val > oldBudget && oldBudget) {
+        return parseInt((val - oldBudget) / oldBudget * 100) + ' %';
+    }
+    else if (oldBudget === 0) {
+        return 0 + '%'
+    }
+    else {
+        return parseInt(val / oldBudget * 100) + ' %';
+    }
+
 }
 selectOption.addEventListener('change', function (e) {
     if (e.target.value === 'exp') {
@@ -56,7 +72,8 @@ selectOption.addEventListener('change', function (e) {
 
 })
 addBtn.addEventListener('click', function (e) {
-
+    var budget = totalBudget;
+    console.log(budget);
     // console.log(whichList);
     let itemClearFix = document.createElement("div");
     itemClearFix.classList.add("item", 'clearfix');
@@ -74,16 +91,19 @@ addBtn.addEventListener('click', function (e) {
     closeOutline.classList.add("ion-ios-close-outline");
     itemDescription.innerHTML = addDescription.value
     itemClearFix.append(itemDescription);
-    itemValue.innerHTML = addValue.value
-    rightClearfix.append(itemValue)
+    var totalValue = parseFloat(addValue.value)
 
     if (!boolSelect) {
-        totalBudget -= parseFloat(itemValue.innerHTML);
-        console.log(totalBudget.toString());
-        budgetValue.innerHTML = totalBudget.toString();
+        itemValue.innerHTML = '- ' + totalValue.toLocaleString("en-US")
+        rightClearfix.append(itemValue)
+        totalBudget -= totalValue;
+        compareTotalBudget()
         let itemPercentage = document.createElement("div");
         itemPercentage.classList.add("item__percentage");
-        var percantage = clacPercentage(parseFloat(itemValue.innerHTML));
+        console.log(budget);
+        console.log(totalValue);
+        var percantage = clacPercentage(totalValue, budget);
+        // console.log(parseFloat(itemValue.innerHTML));
         console.log(percantage);
         itemPercentage.innerHTML = percantage.toString();
         rightClearfix.append(itemPercentage)
@@ -96,13 +116,18 @@ addBtn.addEventListener('click', function (e) {
 
     }
     else {
+        itemValue.innerHTML = '+ ' + totalValue.toLocaleString("en-US")
+        rightClearfix.append(itemValue)
         itemDeleteBtn.append(closeOutline)
         itemDelete.append(itemDeleteBtn)
         rightClearfix.append(itemDelete)
         itemClearFix.append(rightClearfix)
         incomeList.append(itemClearFix);
-        totalBudget += parseFloat(itemValue.innerHTML);
-        budgetValue.innerHTML = totalBudget.toString();
+        totalBudget += totalValue;
+        console.log(totalBudget);
+        compareTotalBudget()
     }
+    // budget = totalBudget;
+    // console.log(totalBudget);
     // console.log(itemClearFix);
 })
