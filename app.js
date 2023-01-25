@@ -29,7 +29,7 @@ function clacPercentage(val, oldBudget) {
         return 0 + '%'
     }
     else {
-        return parseInt(val / oldBudget * 100) + ' %';
+        return parseInt((oldBudget - val) / oldBudget * 100) + ' %';
     }
 
 }
