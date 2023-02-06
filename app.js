@@ -6,11 +6,14 @@ var expensesList = document.querySelector('.expenses__list')
 var incomeList = document.querySelector('.income__list')
 var expensesTitle = document.querySelector('.expenses__title')
 var budgetValue = document.querySelector('.budget__value')
+var currentMonth = document.querySelector('.budget__title--month')
 var totalBudget = 0.00
 var incCounter = 0;
 var expCounter = 0;
 var boolSelect = true;
-
+var date = new Date();
+const month = date.toLocaleString('default', { month: 'long' });
+currentMonth.innerHTML = month
 function compareTotalBudget() {
     if (totalBudget >= 0.00) {
         budgetValue.innerHTML = '+' + totalBudget.toLocaleString("en-US");
