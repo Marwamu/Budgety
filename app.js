@@ -7,6 +7,8 @@ var incomeList = document.querySelector('.income__list')
 var expensesTitle = document.querySelector('.expenses__title')
 var budgetValue = document.querySelector('.budget__value')
 var totalBudget = 0.00
+var incCounter = 0;
+var expCounter = 0;
 // console.log(totalBudget);
 // var budgetValue = document.querySelector('.budget__value')
 var boolSelect = true;
@@ -23,13 +25,13 @@ function compareTotalBudget() {
 }
 function clacPercentage(val, oldBudget) {
     if (val > oldBudget && oldBudget) {
-        return parseInt((val - oldBudget) / oldBudget * 100) + ' %';
+        return parseInt((val / oldBudget) * 100) + ' %';
     }
     else if (oldBudget === 0) {
         return 0 + '%'
     }
     else {
-        return parseInt((oldBudget - val) / oldBudget * 100) + ' %';
+        return parseInt((val / oldBudget) * 100) + ' %';
     }
 
 }
@@ -77,6 +79,7 @@ addBtn.addEventListener('click', function (e) {
     // console.log(whichList);
     let itemClearFix = document.createElement("div");
     itemClearFix.classList.add("item", 'clearfix');
+
     let itemDescription = document.createElement("div");
     itemDescription.classList.add("item__description");
     let rightClearfix = document.createElement("div");
@@ -94,7 +97,10 @@ addBtn.addEventListener('click', function (e) {
     var totalValue = parseFloat(addValue.value)
 
     if (!boolSelect) {
-        itemValue.innerHTML = '- ' + totalValue.toLocaleString("en-US")
+        // itemClearFix.id = 'income' + (++expCounter);
+        itemClearFix.setAttribute('id', 'expense-' + (expCounter++));
+        console.log(itemClearFix.id);
+        itemValue.innerHTML = '-' + totalValue.toLocaleString("en-US")
         rightClearfix.append(itemValue)
         totalBudget -= totalValue;
         compareTotalBudget()
@@ -113,10 +119,13 @@ addBtn.addEventListener('click', function (e) {
         itemClearFix.append(rightClearfix)
         expensesList.append(itemClearFix);
 
-
     }
     else {
-        itemValue.innerHTML = '+ ' + totalValue.toLocaleString("en-US")
+        // itemClearFix.id = 'income' + (++incCounter);
+        // console.log(incCounter);
+        itemClearFix.setAttribute('id', 'income-' + (incCounter++));
+        console.log(itemClearFix.id);
+        itemValue.innerHTML = "+" + totalValue.toLocaleString("en-US")
         rightClearfix.append(itemValue)
         itemDeleteBtn.append(closeOutline)
         itemDelete.append(itemDeleteBtn)
@@ -127,6 +136,17 @@ addBtn.addEventListener('click', function (e) {
         console.log(totalBudget);
         compareTotalBudget()
     }
+    itemDeleteBtn.addEventListener('click', function (e) {
+        let h = itemClearFix.getAttribute('id');
+        // console.log(e.target.closest('.item__value'));
+        console.log(e.target);
+        console.log(itemClearFix.childNodes[1].childNodes[0].innerHTML);
+        totalBudget -= parseFloat(itemClearFix.childNodes[1].childNodes[0].innerHTML)
+        console.log(totalBudget);
+        itemClearFix.remove(h)
+        // itemClearFix.remove(rightClearfix)
+    })
+
     // budget = totalBudget;
     // console.log(totalBudget);
     // console.log(itemClearFix);
