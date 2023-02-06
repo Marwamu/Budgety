@@ -9,12 +9,8 @@ var budgetValue = document.querySelector('.budget__value')
 var totalBudget = 0.00
 var incCounter = 0;
 var expCounter = 0;
-// console.log(totalBudget);
-// var budgetValue = document.querySelector('.budget__value')
 var boolSelect = true;
-// function totalBudget(val) {
-//     return budgetValue.innerHTML += val.value;
-// }
+
 function compareTotalBudget() {
     if (totalBudget >= 0.00) {
         budgetValue.innerHTML = '+' + totalBudget.toLocaleString("en-US");
@@ -99,7 +95,7 @@ addBtn.addEventListener('click', function (e) {
     if (!boolSelect) {
         // itemClearFix.id = 'income' + (++expCounter);
         itemClearFix.setAttribute('id', 'expense-' + (expCounter++));
-        console.log(itemClearFix.id);
+        console.log(itemClearFix);
         itemValue.innerHTML = '-' + totalValue.toLocaleString("en-US")
         rightClearfix.append(itemValue)
         totalBudget -= totalValue;
@@ -121,10 +117,8 @@ addBtn.addEventListener('click', function (e) {
 
     }
     else {
-        // itemClearFix.id = 'income' + (++incCounter);
-        // console.log(incCounter);
         itemClearFix.setAttribute('id', 'income-' + (incCounter++));
-        console.log(itemClearFix.id);
+        console.log(itemClearFix);
         itemValue.innerHTML = "+" + totalValue.toLocaleString("en-US")
         rightClearfix.append(itemValue)
         itemDeleteBtn.append(closeOutline)
@@ -138,13 +132,13 @@ addBtn.addEventListener('click', function (e) {
     }
     itemDeleteBtn.addEventListener('click', function (e) {
         let h = itemClearFix.getAttribute('id');
-        // console.log(e.target.closest('.item__value'));
-        console.log(e.target);
-        console.log(itemClearFix.childNodes[1].childNodes[0].innerHTML);
-        totalBudget -= parseFloat(itemClearFix.childNodes[1].childNodes[0].innerHTML)
+        console.log(h);
+        var x = itemValue.innerHTML.replace(/\,/g, '');
+        console.log(x);
+        totalBudget -= parseFloat(x)
+        compareTotalBudget()
         console.log(totalBudget);
         itemClearFix.remove(h)
-        // itemClearFix.remove(rightClearfix)
     })
 
     // budget = totalBudget;
