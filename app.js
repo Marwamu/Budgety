@@ -7,11 +7,16 @@ var incomeList = document.querySelector('.income__list')
 var expensesTitle = document.querySelector('.expenses__title')
 var budgetValue = document.querySelector('.budget__value')
 var currentMonth = document.querySelector('.budget__title--month')
+var budgetIncome = document.querySelector('.budget__income--value')
+var budgetExpenses = document.querySelector('.budget__expenses--value')
+var totalExpensesPer = document.querySelector('.budget__expenses--percentage')
+
 var totalBudget = 0.00
 var incCounter = 0;
 var expCounter = 0;
 var boolSelect = true;
 var date = new Date();
+var expBudget = 0.00;
 const month = date.toLocaleString('default', { month: 'long' });
 currentMonth.innerHTML = month
 function compareTotalBudget() {
@@ -102,15 +107,21 @@ addBtn.addEventListener('click', function (e) {
         itemValue.innerHTML = '-' + totalValue.toLocaleString("en-US")
         rightClearfix.append(itemValue)
         totalBudget -= totalValue;
+        console.log(totalValue);
+        expBudget += totalValue;
+        console.log(expBudget);
+        budgetExpenses.innerHTML = expBudget.toLocaleString("en-US")
         compareTotalBudget()
         let itemPercentage = document.createElement("div");
         itemPercentage.classList.add("item__percentage");
         console.log(budget);
         console.log(totalValue);
         var percantage = clacPercentage(totalValue, budget);
+        var totalExpenses = clacPercentage(expBudget, budget);
         // console.log(parseFloat(itemValue.innerHTML));
         console.log(percantage);
         itemPercentage.innerHTML = percantage.toString();
+        totalExpensesPer.innerHTML = totalExpenses.toString();
         rightClearfix.append(itemPercentage)
         itemDeleteBtn.append(closeOutline)
         itemDelete.append(itemDeleteBtn)
@@ -129,7 +140,8 @@ addBtn.addEventListener('click', function (e) {
         rightClearfix.append(itemDelete)
         itemClearFix.append(rightClearfix)
         incomeList.append(itemClearFix);
-        totalBudget += totalValue;
+        totalBudget += parseFloat(totalValue);
+        budgetIncome.innerHTML = totalBudget.toLocaleString("en-US")
         console.log(totalBudget);
         compareTotalBudget()
     }
