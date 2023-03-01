@@ -17,14 +17,14 @@ var expCounter = 0;
 var boolSelect = true;
 var date = new Date();
 var expBudget = 0.00;
-const month = date.toLocaleString('default', { month: 'long' });
+const month = date.toLocaleString('default', { month: 'long' }) + ' ' + date.getFullYear();
 currentMonth.innerHTML = month
 function compareTotalBudget() {
     if (totalBudget >= 0.00) {
-        budgetValue.innerHTML = '+' + totalBudget.toLocaleString("en-US");
+        budgetValue.innerHTML = '+' + totalBudget.toLocaleString('en-US');
     }
     else {
-        budgetValue.innerHTML = totalBudget.toLocaleString("en-US");
+        budgetValue.innerHTML = totalBudget.toLocaleString('en-US');
     }
 }
 function clacPercentage(val, oldBudget) {
@@ -98,19 +98,19 @@ addBtn.addEventListener('click', function (e) {
     closeOutline.classList.add("ion-ios-close-outline");
     itemDescription.innerHTML = addDescription.value
     itemClearFix.append(itemDescription);
-    var totalValue = parseFloat(addValue.value)
+    var totalValue = (parseFloat(addValue.value)).toFixed(2)
 
     if (!boolSelect) {
         // itemClearFix.id = 'income' + (++expCounter);
         itemClearFix.setAttribute('id', 'expense-' + (expCounter++));
         console.log(itemClearFix);
-        itemValue.innerHTML = '-' + totalValue.toLocaleString("en-US")
+        itemValue.innerHTML = '-' + totalValue.toLocaleString('en-US')
         rightClearfix.append(itemValue)
         totalBudget -= totalValue;
         console.log(totalValue);
         expBudget += totalValue;
         console.log(expBudget);
-        budgetExpenses.innerHTML = expBudget.toLocaleString("en-US")
+        budgetExpenses.innerHTML = expBudget.toLocaleString('en-US')
         compareTotalBudget()
         let itemPercentage = document.createElement("div");
         itemPercentage.classList.add("item__percentage");
@@ -121,7 +121,7 @@ addBtn.addEventListener('click', function (e) {
         // console.log(parseFloat(itemValue.innerHTML));
         console.log(percantage);
         itemPercentage.innerHTML = percantage.toString();
-        totalExpensesPer.innerHTML = totalExpenses.toString();
+        totalExpensesPer.innerHTML = totalExpenses.toLocaleString('en-US');
         rightClearfix.append(itemPercentage)
         itemDeleteBtn.append(closeOutline)
         itemDelete.append(itemDeleteBtn)
@@ -133,7 +133,7 @@ addBtn.addEventListener('click', function (e) {
     else {
         itemClearFix.setAttribute('id', 'income-' + (incCounter++));
         console.log(itemClearFix);
-        itemValue.innerHTML = "+" + totalValue.toLocaleString("en-US")
+        itemValue.innerHTML = "+" + totalValue.toLocaleString('en-US')
         rightClearfix.append(itemValue)
         itemDeleteBtn.append(closeOutline)
         itemDelete.append(itemDeleteBtn)
@@ -141,7 +141,7 @@ addBtn.addEventListener('click', function (e) {
         itemClearFix.append(rightClearfix)
         incomeList.append(itemClearFix);
         totalBudget += parseFloat(totalValue);
-        budgetIncome.innerHTML = totalBudget.toLocaleString("en-US")
+        budgetIncome.innerHTML = totalBudget.toLocaleString('en-US')
         console.log(totalBudget);
         compareTotalBudget()
     }
